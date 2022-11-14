@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# This class provides generic behavior for any moving piece.
 class Piece
   attr_reader :coordinates, :name, :color
 
@@ -14,6 +15,7 @@ class Piece
   end
 end
 
+# Pawn behavior.
 class Pawn < Piece
   def initialize(coordinates, color)
     super
@@ -21,6 +23,7 @@ class Pawn < Piece
   end
 end
 
+# Knight behavior.
 class Knight < Piece
   def initialize(coordinates, color)
     super
@@ -28,6 +31,7 @@ class Knight < Piece
   end
 end
 
+# Bishop behavior.
 class Bishop < Piece
   def initialize(coordinates, color)
     super
@@ -35,6 +39,7 @@ class Bishop < Piece
   end
 end
 
+# Rook behavior.
 class Rook < Piece
   def initialize(coordinates, color)
     super
@@ -42,6 +47,7 @@ class Rook < Piece
   end
 end
 
+# Queen behavior.
 class Queen < Piece
   def initialize(coordinates, color)
     super
@@ -49,6 +55,7 @@ class Queen < Piece
   end
 end
 
+# King behavior.
 class King < Piece
   def initialize(coordinates, color)
     super

@@ -2,16 +2,25 @@
 
 # Class that prints a board and the current position of all pieces.
 class PrintBoard
-  attr_reader :white, :black
+  attr_reader :coord_mapping, :all_coords
 
   RED = 222
   WHITE = 124
   SQUARE = '  '
 
-  def initialize(white = Side.new('white'), black = Side.new('black'))
-    @white = white
-    @black = black
+  def initialize(all_coords = GameBoard.new.all_squares, coord_mapping = GameBoard.new.merged_locations)
+    @all_coords = all_coords
+    @coord_mapping = coord_mapping
   end
+
+  def print_board
+    char_array = all_coords.map do |row, column|
+      background(row, column)
+    end
+    stringify(char_array)
+  end
+
+  private
 
   def square_display(color, content = SQUARE)
     "\e[48;5;#{color}m#{content}\e[0m"
@@ -21,13 +30,6 @@ class PrintBoard
     { 'Black Knight' => '♞', 'Black Pawn' => '♟︎', 'Black Bishop' => '♝', 'Black Rook' => '♜', 'Black Queen' => '♛', 'Black King' => '♚',
       'White Knight' => '♘', 'White Pawn' => '♙', 'White Bishop' => '♗', 'White Rook' => '♖', 'White Queen' => '♕', 'White King' => '♔',
       'Unoccupied' => ' ' }
-  end
-
-  def print_board(board = GameBoard.new)
-    char_array = board.all_squares.map do |row, column|
-      "#{background(row, column)}"
-    end
-    stringify(char_array)
   end
 
   def stringify(array)
@@ -46,13 +48,9 @@ class PrintBoard
   end
 
   def symbol_lookup(coordinate)
-    symbol = merged_locations[coordinate]&.to_s
-    symbol = 'Unoccupied' if merged_locations[coordinate].nil?
+    symbol = coord_mapping[coordinate]&.to_s
+    symbol = 'Unoccupied' if coord_mapping[coordinate].nil?
 
     " #{piece_symbols[symbol]}"
-  end
-
-  def merged_locations
-    white.coord_map.merge(black.coord_map)
   end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
+
 require_relative 'piece'
 
+# This class provides generic behavior for white or black.
 class Side
   attr_reader :color, :pieces
 

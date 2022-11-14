@@ -19,4 +19,24 @@ describe GameBoard do
       )
     end
   end
+  describe '#print_board' do
+    subject(:game_board) { described_class.new }
+    context 'when there have been no moves' do
+      it 'returns a string of the pieces in their original positions' do
+        board_string = game_board.print_board
+        expect(board_string).to eq(
+          "\
+\e[48;5;222m ♜\e[0m\e[48;5;124m ♞\e[0m\e[48;5;222m ♝\e[0m\e[48;5;124m ♛\e[0m\e[48;5;222m ♚\e[0m\e[48;5;124m ♝\e[0m\e[48;5;222m ♞\e[0m\e[48;5;124m ♜\e[0m 8 \n\
+\e[48;5;124m ♟︎\e[0m\e[48;5;222m ♟︎\e[0m\e[48;5;124m ♟︎\e[0m\e[48;5;222m ♟︎\e[0m\e[48;5;124m ♟︎\e[0m\e[48;5;222m ♟︎\e[0m\e[48;5;124m ♟︎\e[0m\e[48;5;222m ♟︎\e[0m 7 \n\
+\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m 6 \n\
+\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m 5 \n\
+\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m 4 \n\
+\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m 3 \n\
+\e[48;5;222m ♙\e[0m\e[48;5;124m ♙\e[0m\e[48;5;222m ♙\e[0m\e[48;5;124m ♙\e[0m\e[48;5;222m ♙\e[0m\e[48;5;124m ♙\e[0m\e[48;5;222m ♙\e[0m\e[48;5;124m ♙\e[0m 2 \n\
+\e[48;5;124m ♖\e[0m\e[48;5;222m ♘\e[0m\e[48;5;124m ♗\e[0m\e[48;5;222m ♕\e[0m\e[48;5;124m ♔\e[0m\e[48;5;222m ♗\e[0m\e[48;5;124m ♘\e[0m\e[48;5;222m ♖\e[0m 1 \n\
+ a b c d e f g h"
+        )
+      end
+    end
+  end
 end
