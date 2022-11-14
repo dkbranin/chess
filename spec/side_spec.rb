@@ -54,4 +54,20 @@ describe Side do
       end
     end
   end
+
+  describe '#coord_lookup' do
+    subject(:white_side) { described_class.new( 'white' ) }
+    context 'when a valid coordinate is used' do
+      it 'returns the piece object' do
+        piece_name = white_side.coord_lookup([6, 1]).name
+        expect(piece_name).to eq('Pawn')
+      end
+    end
+    context 'when a coordinate that is not present is used' do
+      it 'returns nil' do
+        nil_value = white_side.coord_lookup([3, 3])
+        expect(nil_value).to eq(nil)
+      end
+    end
+  end    
 end
