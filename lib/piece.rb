@@ -3,9 +3,14 @@
 class Piece
   attr_reader :coordinates, :name, :color
 
-  def initialize(coordinates, color)
+  def initialize(coordinates, color, name = nil)
     @coordinates = coordinates
     @color = color
+    @name = name
+  end
+
+  def to_s
+    "#{color.capitalize} #{name}"
   end
 end
 

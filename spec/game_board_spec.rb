@@ -19,22 +19,4 @@ describe GameBoard do
       )
     end
   end
-
-  describe '#all_positions' do
-    subject(:game_board) { described_class.new }
-    it 'should not be nil' do
-      array_with_pieces = game_board.all_positions
-      expect(array_with_pieces).not_to eq(nil)
-    end
-    context 'when the piece is occupied' do
-      it 'returns the name of the piece' do
-        black_knight = game_board.all_positions[9]
-        expect(black_knight).to eq('Black Pawn')
-      end
-      it 'returns the name of the piece' do
-        black_knight = game_board.all_positions[6]
-        expect(black_knight).to eq('Black Knight')
-      end
-    end
-  end
 end
