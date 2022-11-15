@@ -8,8 +8,8 @@ describe Move do
     let(:board) { double('GameBoard') }
     context 'when a piece is moved' do
       it 'sends the coordinates to the game board' do
-        expect(board).to receive(:make_move)
-        move.make_move([2, 4])
+        expect(board).to receive(:change_piece)
+        move.make_move([6, 0], [5, 0], board)
       end
     end
   end

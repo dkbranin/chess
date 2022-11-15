@@ -54,11 +54,14 @@ class GameBoard
 
   def change_piece(old_coordinates, new_coordinates)
     piece = coordinate_lookup[old_coordinates]
+    return if piece.validate_move(new_coordinates) == false
+
     piece.coordinates = new_coordinates
     print_board
   end
 
-  def occupied_by_own?(array)
+  def occupied_by_own?(move, player)
+    coordinate_lookup[move]&.color == player.color
   end
 
   def print_board
