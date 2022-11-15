@@ -2,15 +2,15 @@
 
 # Class that prints a board and the current position of all pieces.
 class PrintBoard
-  attr_reader :coord_mapping, :all_coords
+  attr_reader :piece_status, :all_coords
 
   RED = 222
   WHITE = 124
   SQUARE = '  '
 
-  def initialize(all_coords = GameBoard.new.all_squares, coord_mapping = GameBoard.new.merged_locations)
+  def initialize(all_coords = GameBoard.new.all_squares, piece_status = GameBoard.new.merged_locations)
     @all_coords = all_coords
-    @coord_mapping = coord_mapping
+    @piece_status = piece_status
   end
 
   def print_board
@@ -24,6 +24,14 @@ class PrintBoard
 
   def square_display(color, content = SQUARE)
     "\e[48;5;#{color}m#{content}\e[0m"
+  end
+
+  def coord_lookup(current_pieces = piece_status)
+    new_hash = {}
+    current_pieces.each_value do |piece|
+      new_hash[piece.coordinates] = piece
+    end
+    new_hash
   end
 
   def piece_symbols
@@ -48,8 +56,8 @@ class PrintBoard
   end
 
   def symbol_lookup(coordinate)
-    symbol = coord_mapping[coordinate]&.to_s
-    symbol = 'Unoccupied' if coord_mapping[coordinate].nil?
+    symbol = coord_lookup[coordinate]&.to_s
+    symbol = 'Unoccupied' if coord_lookup[coordinate].nil?
 
     " #{piece_symbols[symbol]}"
   end

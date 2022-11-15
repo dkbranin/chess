@@ -2,9 +2,9 @@
 
 # This class is responsible for initially running the game.
 class Game
+  attr_reader :board
+
   def initialize
-    @white = Side.new('white')
-    @black = Side.new('black')
-    @board = GameBoard.new(white, black)
+    @board = GameBoard.new
   end
 end

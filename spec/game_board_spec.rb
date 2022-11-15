@@ -39,4 +39,25 @@ describe GameBoard do
       end
     end
   end
+
+  describe '#change_piece' do
+    subject(:game_board) { described_class.new }
+    context 'when a piece is changed' do
+      it 'prints a board with the piece in the new position' do
+        board_string = game_board.change_piece(:w_pawn_b, [5, 1])
+        expect(board_string).to eq(
+          "\
+\e[48;5;222m ♜\e[0m\e[48;5;124m ♞\e[0m\e[48;5;222m ♝\e[0m\e[48;5;124m ♛\e[0m\e[48;5;222m ♚\e[0m\e[48;5;124m ♝\e[0m\e[48;5;222m ♞\e[0m\e[48;5;124m ♜\e[0m 8 \n\
+\e[48;5;124m ♟︎\e[0m\e[48;5;222m ♟︎\e[0m\e[48;5;124m ♟︎\e[0m\e[48;5;222m ♟︎\e[0m\e[48;5;124m ♟︎\e[0m\e[48;5;222m ♟︎\e[0m\e[48;5;124m ♟︎\e[0m\e[48;5;222m ♟︎\e[0m 7 \n\
+\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m 6 \n\
+\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m 5 \n\
+\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m 4 \n\
+\e[48;5;124m  \e[0m\e[48;5;222m ♙\e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m\e[48;5;124m  \e[0m\e[48;5;222m  \e[0m 3 \n\
+\e[48;5;222m ♙\e[0m\e[48;5;124m  \e[0m\e[48;5;222m ♙\e[0m\e[48;5;124m ♙\e[0m\e[48;5;222m ♙\e[0m\e[48;5;124m ♙\e[0m\e[48;5;222m ♙\e[0m\e[48;5;124m ♙\e[0m 2 \n\
+\e[48;5;124m ♖\e[0m\e[48;5;222m ♘\e[0m\e[48;5;124m ♗\e[0m\e[48;5;222m ♕\e[0m\e[48;5;124m ♔\e[0m\e[48;5;222m ♗\e[0m\e[48;5;124m ♘\e[0m\e[48;5;222m ♖\e[0m 1 \n\
+ a b c d e f g h"
+        )
+      end
+    end
+  end
 end

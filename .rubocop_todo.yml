@@ -35,6 +35,8 @@ Layout/TrailingWhitespace:
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, AllowedMethods, AllowedPatterns, IgnoredMethods.
 # AllowedMethods: refine
 Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
   Max: 27
 
 # Offense count: 1
