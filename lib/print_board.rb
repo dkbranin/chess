@@ -28,7 +28,7 @@ class PrintBoard
 
   def coord_lookup(current_pieces = piece_status)
     new_hash = {}
-    current_pieces.each_value do |piece|
+    current_pieces.each do |piece|
       new_hash[piece.coordinates] = piece
     end
     new_hash

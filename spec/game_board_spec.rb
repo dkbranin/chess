@@ -44,7 +44,7 @@ describe GameBoard do
     subject(:game_board) { described_class.new }
     context 'when a piece is changed' do
       it 'prints a board with the piece in the new position' do
-        board_string = game_board.change_piece(:w_pawn_b, [5, 1])
+        board_string = game_board.change_piece([6, 1], [5, 1])
         expect(board_string).to eq(
           "\
 \e[48;5;222m ♜\e[0m\e[48;5;124m ♞\e[0m\e[48;5;222m ♝\e[0m\e[48;5;124m ♛\e[0m\e[48;5;222m ♚\e[0m\e[48;5;124m ♝\e[0m\e[48;5;222m ♞\e[0m\e[48;5;124m ♜\e[0m 8 \n\
