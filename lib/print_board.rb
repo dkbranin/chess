@@ -26,12 +26,8 @@ class PrintBoard
     "\e[48;5;#{color}m#{content}\e[0m"
   end
 
-  def coord_lookup(current_pieces = piece_status)
-    new_hash = {}
-    current_pieces.each do |piece|
-      new_hash[piece.coordinates] = piece
-    end
-    new_hash
+  def coord_lookup(coords, array = piece_status)
+    array.find { |piece| piece.coordinates == coords }
   end
 
   def piece_symbols
@@ -56,8 +52,8 @@ class PrintBoard
   end
 
   def symbol_lookup(coordinate)
-    symbol = coord_lookup[coordinate]&.to_s
-    symbol = 'Unoccupied' if coord_lookup[coordinate].nil?
+    symbol = coord_lookup(coordinate)&.to_s
+    symbol = 'Unoccupied' if coord_lookup(coordinate).nil?
 
     " #{piece_symbols[symbol]}"
   end

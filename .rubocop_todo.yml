@@ -68,4 +68,6 @@ Style/NumericPredicate:
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns, IgnoredPatterns.
 # URISchemes: http, https
 Layout/LineLength:
+  Exclude:
+    - 'spec/**/*'
   Max: 158

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# This class contains information about a player and provides various input and output methods.
 class Player
   attr_reader :color
 

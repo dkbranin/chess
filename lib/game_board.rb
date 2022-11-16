@@ -36,12 +36,8 @@ class GameBoard
      King.new([0, 4], :black)]
   end
 
-  def coordinate_lookup(array = merged_locations)
-    new_hash = {}
-    array.each do |piece|
-      new_hash[piece.coordinates] = piece
-    end
-    new_hash
+  def coordinate_lookup(coords, array = merged_locations)
+    array.find { |piece| piece.coordinates == coords }
   end
 
   def occupied_coordinates(array = merged_locations)
@@ -53,7 +49,7 @@ class GameBoard
   end
 
   def change_piece(old_coordinates, new_coordinates)
-    piece = coordinate_lookup[old_coordinates]
+    piece = coordinate_lookup(old_coordinates)
     return if piece.validate_move(new_coordinates) == false
 
     piece.coordinates = new_coordinates
@@ -61,7 +57,7 @@ class GameBoard
   end
 
   def occupied_by_own?(move, color = :white)
-    coordinate_lookup[move]&.color == color
+    coordinate_lookup(move)&.color == color
   end
 
   def print_board

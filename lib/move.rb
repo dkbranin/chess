@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# This class contains methods to validate that a move can be played.
 class Move
   attr_reader :board, :moving_piece_color, :piece, :new_coordinates
 
@@ -25,11 +26,11 @@ class Move
   end
 
   def capture_attempt?
-    board.coordinate_lookup[new_coordinates].color == opponent_color
+    board.coordinate_lookup(new_coordinates).color == opponent_color
   end
 
   def capture
-    captured_piece = board.coordinate_lookup[new_coordinates]
+    captured_piece = board.coordinate_lookup(new_coordinates)
     captured_piece.coordinates = nil
   end
 
