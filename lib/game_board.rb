@@ -26,6 +26,10 @@ class GameBoard
     array.find { |piece| piece.coordinates == coords }
   end
 
+  def all_occupied_squares(array = merged_locations)
+    array.map { |piece| piece&.coordinates }
+  end
+
   def change_piece(old_coordinates, new_coordinates)
     piece = coordinate_lookup(old_coordinates)
     return if piece.validate_move(new_coordinates) == false
@@ -34,8 +38,8 @@ class GameBoard
     print_board
   end
 
-  def occupied_by_own?(move, color = :white)
-    coordinate_lookup(move)&.color == color
+  def occupied_by_own?(move, own_color)
+    coordinate_lookup(move)&.color == own_color
   end
 
   def print_board

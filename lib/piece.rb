@@ -38,15 +38,25 @@ class Pawn < Piece
   end
 
   def validate_white(move)
+    return white_capture(move) unless same_column?(move)
     return true if (coordinates[0] - move[0] == 1) && same_column?(move)
 
     coordinates[0] == 6 && (coordinates[0] - move[0]) == 2 && same_column?(move)
   end
 
   def validate_black(move)
+    return black_capture(move) unless same_column?(move)
     return true if (move[0] - coordinates[0] == 1) && same_column?(move)
 
     coordinates[0] == 1 && (move[0] - coordinates[0]) == 2 && same_column?(move)
+  end
+
+  def white_capture(move)
+    coordinates[0] - move[0] == 1 && (coordinates[1] - move[1]).abs == 1
+  end
+
+  def black_capture(move)
+    move[0] - coordinates[0] == 1 && (coordinates[1] - move[1]).abs == 1
   end
 
   def same_column?(move)
@@ -64,12 +74,12 @@ class Knight < Piece
   end
 
   def validate_move(move)
-    return true if (coordinates[0] - move[0]).abs == 2 && net_change(move) == 1
+    return true if (coordinates[0] - move[0]).abs == 2 && column_change(move) == 1
 
-    (coordinates[0] - move[0]).abs == 1 && net_change(move) == 2
+    (coordinates[0] - move[0]).abs == 1 && column_change(move) == 2
   end
 
-  def net_change(move)
+  def column_change(move)
     (coordinates[1] - move[1]).abs
   end
 end
