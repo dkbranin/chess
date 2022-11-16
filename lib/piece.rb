@@ -9,6 +9,8 @@ class Piece
     @coordinates = coordinates
     @color = color
     @name = name
+    @pathing = false
+    @taken = false
   end
 
   def to_s
@@ -25,10 +27,13 @@ class Pawn < Piece
   def initialize(coordinates, color)
     super
     @name = 'Pawn'
+    @pathing = true
+    @taken = false
   end
 
   def validate_move(move)
     return validate_white(move) if color == :white
+
     validate_black(move)
   end
 
@@ -50,6 +55,8 @@ class Knight < Piece
   def initialize(coordinates, color)
     super
     @name = 'Knight'
+    @pathing = false
+    @taken = false
   end
 
   def validate_move(move)
@@ -64,6 +71,8 @@ class Bishop < Piece
   def initialize(coordinates, color)
     super
     @name = 'Bishop'
+    @pathing = true
+    @taken = false
   end
 
   def validate_move(move)
@@ -76,6 +85,8 @@ class Rook < Piece
   def initialize(coordinates, color)
     super
     @name = 'Rook'
+    @pathing = true
+    @taken = false
   end
 
   def validate_move(move)
@@ -88,6 +99,8 @@ class Queen < Piece
   def initialize(coordinates, color)
     super
     @name = 'Queen'
+    @pathing = true
+    @taken = false
   end
 
   def validate_move(move)
@@ -102,6 +115,8 @@ class King < Piece
   def initialize(coordinates, color)
     super
     @name = 'King'
+    @pathing = true
+    @taken = false
   end
 
   def validate_move(move)

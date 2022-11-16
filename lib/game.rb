@@ -6,5 +6,7 @@ class Game
 
   def initialize
     @board = GameBoard.new
+    @player_one = Player.new(:white)
+    @player_two = Player.new(:black)
   end
 end
