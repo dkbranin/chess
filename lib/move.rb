@@ -42,7 +42,7 @@ class Move
     return true unless piece.pathing
 
     traversed_path = Path.new.path_choice(piece.coordinates, new_coordinates)
-    return false if traversed_path.any? { |square| board.coordinate_lookup[square]&.color = moving_piece_color } # prompt for input
+    return false if traversed_path.any? { |square| board.coordinate_lookup(square)&.color = moving_piece_color } # prompt for input
 
     true
   end
@@ -56,7 +56,7 @@ class Move
 
     traversed_path = Path.new.path_choice(piece.coordinates, new_coordinates)
     traversed_path.pop
-    return false if traversed_path.any? { |square| board.coordinate_lookup[square]&.color = opponent } # prompt for input
+    return false if traversed_path.any? { |square| board.coordinate_lookup(square)&.color = opponent } # prompt for input
 
     true
   end

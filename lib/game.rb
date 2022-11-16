@@ -15,7 +15,7 @@ class Game
   def game_loop(player = player_one)
     board.print_board
     coords = player.export_coordinates
-    active_piece = board.coordinate_lookup[coords[0]]
+    active_piece = board.coordinate_lookup(coords[0])
     player.invalid_input if Move.new(active_piece, coords[1], board, player.color).move_checks == false
     @turn_counter += 1
     game_loop(turn)

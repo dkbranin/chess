@@ -31,38 +31,15 @@ describe Player do
     end
   end
 
-  describe '#input_to_coords' do
+  describe '#export_coordinates' do
     subject(:player) { described_class.new }
-    context 'when the coordinate is a1' do
-      it 'returns [7, 0]' do
-        coordinate = player.input_to_coords('a1')
-        expect(coordinate).to eq([7, 0])
+    context 'when receiving player input' do
+      before do
+        allow(player).to receive(:validate_input).and_return('a1b2')
       end
-    end
-    context 'when the coordinate is h8' do
-      it 'returns [0, 7]' do
-        coordinate = player.input_to_coords('h8')
-        expect(coordinate).to eq([0, 7])
-      end
-    end
-  end
-
-  describe '#first_coordinate' do
-    subject(:player) { described_class.new }
-    context 'when the coordinate is a1h8' do
-      it 'returns [7, 0]' do
-        coordinate = player.first_coordinate('a1h8')
-        expect(coordinate).to eq([7, 0])
-      end
-    end
-  end
-
-  describe '#second_coordinate' do
-    subject(:player) { described_class.new }
-    context 'when the coordinate is a1h8' do
-      it 'returns [0, 7]' do
-        coordinate = player.second_coordinate('a1h8')
-        expect(coordinate).to eq([0, 7])
+      it 'returns a 2d array of coordinates' do
+        array = player.export_coordinates
+        expect(array).to eq([[7, 0], [6, 1]])
       end
     end
   end
