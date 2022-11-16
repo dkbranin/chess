@@ -2,7 +2,7 @@
 
 # This class provides generic behavior for any moving piece.
 class Piece
-  attr_reader :name, :color
+  attr_reader :name, :color, :pathing
   attr_accessor :coordinates
 
   def initialize(coordinates, color, name = nil)

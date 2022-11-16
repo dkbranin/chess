@@ -14,6 +14,11 @@ class Player
     gets.chomp
   end
 
+  def export_coordinates
+    raw = validate_input
+    [first_coordinate(raw), second_coordinate(raw)]
+  end
+
   def validate_input
     prospective_move = input_obtainer
     invalid_input unless valid_input?(prospective_move)

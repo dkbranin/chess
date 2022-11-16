@@ -69,19 +69,19 @@ describe GameBoard do
     end
     context 'when the square is occupied by the moving player color' do
       it 'returns true' do
-        validation = game_board.occupied_by_own?([6, 1], current_player)
+        validation = game_board.occupied_by_own?([6, 1], current_player.color)
         expect(validation).to eq(true)
       end
     end
     context 'when the square is occupied by the opposing player color' do
       it 'returns false' do
-        validation = game_board.occupied_by_own?([0, 1], current_player)
+        validation = game_board.occupied_by_own?([0, 1], current_player.color)
         expect(validation).to eq(false)
       end
     end
     context 'when the square is not occupied' do
       it 'returns false' do
-        validation = game_board.occupied_by_own?([4, 4], current_player)
+        validation = game_board.occupied_by_own?([4, 4], current_player.color)
         expect(validation).to eq(false)
       end
     end
