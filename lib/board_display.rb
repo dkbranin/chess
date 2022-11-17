@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 # Class that prints a board and the current position of all pieces.
-class PrintBoard
+class BoardDisplay
   attr_reader :piece_status, :all_coords
 
   RED = 222
   WHITE = 124
   SQUARE = '  '
 
-  def initialize(all_coords = GameBoard.new.all_squares, piece_status = GameBoard.new.merged_locations)
+  def initialize(all_coords = GameBoard.new.all_coordinates, piece_status = GameBoard.new.merged_locations)
     @all_coords = all_coords
     @piece_status = piece_status
   end

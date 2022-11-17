@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require_relative '../lib/game_board'
+require_relative '../lib/empty_square'
 
 describe GameBoard do
-  describe '#all_squares' do
+  describe '#all_coordinates' do
     subject(:game_board) { described_class.new }
     it 'generates an array of coordinates for each row and column' do
-      game_array = game_board.all_squares
+      game_array = game_board.all_coordinates
       expect(game_array).to eq(
         [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
          [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7],

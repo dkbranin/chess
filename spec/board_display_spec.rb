@@ -1,6 +1,6 @@
-require_relative '../lib/print_board'
+require_relative '../lib/board_display'
 
-describe PrintBoard do
+describe BoardDisplay do
   describe '#print_board' do
     subject(:occupied_board) { described_class.new }
     let(:board_data) { instance_double('GameBoard')}

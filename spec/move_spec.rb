@@ -22,8 +22,9 @@ describe Move do
     context 'when a move is blocked' do
       let(:pawn) { double('Pawn', coordinates: [6, 6]) }
       before do
-        allow(board).to receive(:all_occupied_squares).and_return([[5, 5], [6, 6]])
+        allow(board).to receive(:all_occupied_coordinates).and_return([[5, 5], [6, 6]])
         allow(pawn).to receive(:include?)
+        allow(bishop).to receive(:name).and_return('Bishop')
       end
       it 'returns true' do
         validation = move.blocked?
@@ -34,8 +35,9 @@ describe Move do
     context 'when a move is not blocked' do
       let(:pawn) { double('Pawn', coordinates: [6, 5]) }
       before do
-        allow(board).to receive(:all_occupied_squares).and_return([6, 5])
+        allow(board).to receive(:all_occupied_coordinates).and_return([6, 5])
         allow(pawn).to receive(:include?)
+        allow(bishop).to receive(:name).and_return('Bishop')
       end
       it 'returns false' do
         validation = move.blocked?

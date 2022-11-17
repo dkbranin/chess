@@ -23,12 +23,14 @@ class Move
   end
 
   def horizontal_check_squares
-    king = board.all_occupied_squares.find { |piece| piece.name == 'King' && piece.color == :moving_piece_color }
     Check.new(king).linear_check_possibilities
   end
 
+  def king
+    board.get_specific_piece('King', :moving_piece_color)
+  end
+
   def diagonal_check_squares
-    king = board.all_occupied_squares.find { |piece| piece.name == 'King' && piece.color == :moving_piece_color }
     Check.new(king).diagonal_check_possibilities
   end
 
@@ -55,7 +57,7 @@ class Move
   end
 
   def knight_attacking?
-    board.all_occupied_squares.find { |piece| piece.name == 'King' && piece.color == :moving_piece_color }
+    king
   end
 
   def make_move(game_board = board)
@@ -87,7 +89,7 @@ class Move
     return false if piece.name == 'Knight'
 
     traversed_path = Path.new.path_choice(piece.coordinates, new_coordinates)
-    return true if traversed_path.any? { |coords| board.all_occupied_squares.include?(coords) } # prompt for input
+    return true if traversed_path.any? { |coords| board.all_occupied_coordinates.include?(coords) } # prompt for input
 
     false
   end
