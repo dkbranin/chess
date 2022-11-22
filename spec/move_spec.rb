@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/move'
+require_relative '../lib/coordinate_mapper'
 
 describe Move do
   describe '#make_move' do
@@ -58,6 +59,30 @@ describe Move do
       it 'changes the coordinates on the captured piece' do
         expect(knight).to receive(:coordinates=)
         move.capture
+      end
+    end
+  end
+
+  describe '#piece_range' do
+    let(:board) { double('Board') }
+    let(:rook) { Rook.new([4, 4], :white)}
+    subject(:move) { described_class.new(rook, [3, 3], board, :white)}
+    context 'when a move is attempted' do
+      it 'provides a complete list of possible coordinates' do
+        moves = move.piece_range
+        expect(moves).to eq([[0, 4], [1, 4], [2, 4], [3, 4], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [5, 4], [6, 4], [7, 4]])
+      end
+    end
+  end
+
+  describe '#not_own_color' do
+    let(:board) { double('Board') }
+    let(:rook) { Rook.new([4, 4], :white)}
+    subject(:move) { described_class.new(rook, [3, 3], board, :white)}
+    context 'when a move is attempted' do
+      it 'exempts pieces of the moving color' do
+        moves = move.not_own_color
+        expect(moves).to eq([[0, 4], [1, 4], [2, 4], [3, 4], [4, 0], [4, 1], [4, 2], [4, 3], [4, 5], [4, 6], [4, 7], [5, 4]])
       end
     end
   end

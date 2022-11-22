@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'piece'
+require_relative 'empty_square'
 
 # This class stores the placement of all pieces.
 class GameBoard
@@ -12,19 +13,12 @@ class GameBoard
     @open_spaces = empty_spaces
   end
 
-  def all_coordinates
-    ordinal_array = Array.new(8) { |number| number }
-    holding_array = []
-    ordinal_array.repeated_permutation(2) { |permutation| holding_array << permutation }
-    holding_array
-  end
-
   def merged_locations
     white_pieces + black_pieces
   end
 
-  def empty_spaces
-    empty_coordinates = all_coordinates - all_occupied_coordinates(merged_locations)
+  def empty_spaces(array = merged_locations)
+    empty_coordinates = CoordinateMapper.new.all_coordinates - array.map(&:coordinates)
     empty_coordinates.map { |coordinate| EmptySquare.new(coordinate) }
   end
 
@@ -41,7 +35,7 @@ class GameBoard
   end
 
   def get_specific_piece(name, color, array = board_state)
-    array.find { |piece| piece == name && piece == color }
+    array.filter { |piece| piece == name && piece == color }
   end
 
   def change_piece(old_coordinates, new_coordinates)
@@ -50,12 +44,16 @@ class GameBoard
     print_board
   end
 
+  def pieces_of_color(color, array = board_state)
+    array.filter { |piece| piece.color == color }
+  end
+
   def occupied_by_own?(move, own_color)
     coordinate_lookup(move)&.color == own_color
   end
 
   def print_board
-    BoardDisplay.new(all_coordinates, merged_locations).print_board
+    BoardDisplay.new(board_state).print_board
   end
 
   private

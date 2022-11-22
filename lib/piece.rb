@@ -16,10 +16,6 @@ class Piece
   def to_s
     "#{color.capitalize} #{name}"
   end
-
-  def move(new_coordinates)
-    self.coordinates = new_coordinates
-  end
 end
 
 # Pawn behavior.

@@ -22,42 +22,24 @@ class Move
     make_move
   end
 
+  def piece_range
+    CoordinateMapper.new.all_coordinates.filter { |coordinate| piece.validate_move(coordinate) }
+  end
+
+  def not_own_color
+    piece_range - board.pieces_of_color(:moving_piece_color)
+  end
+
   def horizontal_check_squares
     Check.new(king).linear_check_possibilities
   end
 
   def king
-    board.get_specific_piece('King', :moving_piece_color)
+    board.get_specific_piece('King', :moving_piece_color)[0]
   end
 
   def diagonal_check_squares
     Check.new(king).diagonal_check_possibilities
-  end
-
-  def linear_check?(straight_arrays, piece_array)
-    checked_piece = false
-    straight_arrays.each do |array|
-      array.each do |coord|
-        break if board.coordinate_lookup(coord)&.color == :moving_piece_color
-
-        checked_piece = true if piece_array.include?(board.coordinate_lookup(coord).name)
-        break if checked_piece
-      end
-      break if checked_piece
-    end
-    checked_piece
-  end
-
-  def linear_attacks
-    linear_check?(horizontal_check_squares, %w[Queen Rook])
-  end
-
-  def diagonal_attacks
-    linear_check?(diagonal_check_squares, %w[Queen Bishop])
-  end
-
-  def knight_attacking?
-    king
   end
 
   def make_move(game_board = board)

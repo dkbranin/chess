@@ -10,14 +10,15 @@ class Player
 
   def export_coordinates
     raw = validate_input
-    [first_coordinate(raw), second_coordinate(raw)]
+    p raw
+    CoordinateMapper.new.coordinate_lookup(raw)
   end
 
   def validate_input
     prospective_move = input_obtainer
     invalid_input unless valid_input?(prospective_move)
 
-    prospective_move
+    [prospective_move[0, 2].to_sym, prospective_move[2, 4].to_sym]
   end
 
   def valid_input?(input)
@@ -37,29 +38,5 @@ class Player
     would like to move, then the coordiates of the square you would like to move \
     to. (For example, d2d4).'
     gets.chomp
-  end
-
-  def input_to_coords(user_coord)
-    split_coord = user_coord.chars
-    [8 - split_coord[1].to_i, letter_hash[split_coord[0]]]
-  end
-
-  def first_coordinate(input)
-    input_to_coords(input[0, 2])
-  end
-
-  def second_coordinate(input)
-    input_to_coords(input[2, 2])
-  end
-
-  def letter_hash
-    { 'a' => 0,
-      'b' => 1,
-      'c' => 2,
-      'd' => 3,
-      'e' => 4,
-      'f' => 5,
-      'g' => 6,
-      'h' => 7 }
   end
 end

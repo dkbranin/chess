@@ -8,7 +8,7 @@ class BoardDisplay
   WHITE = 124
   SQUARE = '  '
 
-  def initialize(all_coords = GameBoard.new.all_coordinates, piece_status = GameBoard.new.merged_locations)
+  def initialize(piece_status = GameBoard.new.board_state, all_coords = CoordinateMapper.new.all_coordinates)
     @all_coords = all_coords
     @piece_status = piece_status
   end

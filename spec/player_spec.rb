@@ -35,7 +35,7 @@ describe Player do
     subject(:player) { described_class.new }
     context 'when receiving player input' do
       before do
-        allow(player).to receive(:validate_input).and_return('a1b2')
+        allow(player).to receive(:validate_input).and_return(%i[a1 b2])
       end
       it 'returns a 2d array of coordinates' do
         array = player.export_coordinates

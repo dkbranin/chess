@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
 class Square
-  def initialize(coordinate, occupant = nil)
+  RED = 222
+  WHITE = 124
+  SQUARE = '  '
+
+  def initialize(coordinate)
     @coordinate = coordinate
-    @occupant = occupant
+    @background_color = color(*coordinate)
+  end
+
+  def color(row, column)
+    (row + column).even? ? RED : WHITE
   end
 end
