@@ -13,68 +13,78 @@ class Move
   end
 
   def move_checks
-    return false if invalid_pawn_capture?
-    return false if piece.validate_move(new_coordinates) == false
-    return false if blocked?
-    return false if taking_own_piece? == true
+    return false unless eliminate_blocked_options.include?(new_coordinates)
+    return false if would_end_in_check?
 
-    capture if capture_attempt?
-    make_move
+    alter_board
   end
 
-  def piece_range
-    CoordinateMapper.new.all_coordinates.filter { |coordinate| piece.validate_move(coordinate) }
+  def alter_board(game_board = board)
+    capture(game_board) if capture_attempt?(game_board)
+    make_move(game_board)
   end
 
-  def not_own_color
-    same_color_coords = board.pieces_of_color(moving_piece_color).map(&:coordinates)
-    (piece_range - same_color_coords).reject { |coordinates| piece.coordinates == coordinates }
+  def would_end_in_check?
+    temp_state = board.dup
+    alter_board(temp_state)
+    Move.new(piece, new_coordinates, temp_state).in_check?
   end
 
-  def horizontal_check_squares
-    Check.new(king).linear_check_possibilities
+  def piece_range(active_piece = piece)
+    CoordinateMapper.new.all_coordinates.filter { |coordinate| active_piece.validate_move(board.coordinate_lookup(coordinate)) }
+  end
+
+  def not_own_color(color = moving_piece_color, active_piece = piece)
+    same_color_coords = board.pieces_of_color(color).map(&:coordinates)
+    (piece_range(active_piece) - same_color_coords).reject { |coordinates| active_piece.coordinates == coordinates }
   end
 
   def king
     board.get_specific_piece('King', moving_piece_color)[0]
   end
 
-  def diagonal_check_squares
-    Check.new(king).diagonal_check_possibilities
-  end
-
   def make_move(game_board = board)
     game_board.change_piece(piece.coordinates, new_coordinates)
   end
 
-  def capture
-    captured_piece = board.coordinate_lookup(new_coordinates)
-    captured_piece.coordinates = nil
-  end
-
-  def invalid_pawn_capture?
-    return false unless piece.name == 'Pawn'
-    return false unless piece.coordinates[1] == new_coordinates[1]
-    return false unless capture_attempt?
-
-    true
+  def capture(game_board = board)
+    captured_piece = game_board.coordinate_lookup(new_coordinates)
+    board.remove_piece(captured_piece)
   end
 
   def opponent_color
     moving_piece_color == :white ? :black : :white
   end
 
-  def capture_attempt?
-    board.coordinate_lookup(new_coordinates)&.color == opponent_color
+  def capture_attempt?(game_board = board)
+    game_board.coordinate_lookup(new_coordinates)&.color == opponent_color
   end
 
-  def blocked?
-    return false if piece.name == 'Knight'
+  def blocked?(target = new_coordinates, active_piece = piece)
+    return false if active_piece.name == 'Knight'
 
-    traversed_path = Path.new.path_choice(piece.coordinates, new_coordinates)
+    traversed_path = Path.new.path_choice(active_piece.coordinates, target)
     return true if traversed_path.any? { |coords| board.all_occupied_coordinates.include?(coords) } # prompt for input
 
     false
+  end
+
+  def eliminate_blocked_options(array = not_own_color, active_piece = piece)
+    array.reject { |coordinate| blocked?(coordinate, active_piece) }
+  end
+
+  def check_squares
+    check_square_array = []
+    board.pieces_of_color(opponent_color).each do |opp_piece|
+      not_color = not_own_color(opponent_color, opp_piece)
+      check_square_array.push(eliminate_blocked_options(not_color, opp_piece))
+    end
+    p check_square_array.flatten(1).uniq
+    check_square_array.flatten(1).uniq
+  end
+
+  def in_check?
+    check_squares.include?(king.coordinates)
   end
 
   def taking_own_piece?

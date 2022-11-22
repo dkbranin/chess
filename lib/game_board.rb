@@ -5,7 +5,8 @@ require_relative 'empty_square'
 
 # This class stores the placement of all pieces.
 class GameBoard
-  attr_reader :white_pieces, :black_pieces, :open_spaces, :state
+  attr_reader :white_pieces, :black_pieces, :open_spaces
+  attr_accessor :state
 
   def initialize
     @white_pieces = create_white_pieces
@@ -27,28 +28,32 @@ class GameBoard
     merged_locations + open_spaces
   end
 
-  def coordinate_lookup(coords, array = board_state)
+  def coordinate_lookup(coords, array = state)
     array.find { |piece| piece.coordinates == coords }
   end
 
-  def all_occupied_coordinates(array = board_state)
+  def all_occupied_coordinates(array = merged_locations)
     array.map { |piece| piece&.coordinates }
   end
 
-  def get_specific_piece(name, color, array = board_state)
-    array.filter { |piece| piece == name && piece == color }
+  def get_specific_piece(name, color, array = state)
+    array.filter { |piece| piece.name == name && piece.color == color }
+  end
+
+  def remove_piece(piece, array = state)
+    array.delete_if { |potential_piece| piece == potential_piece }
   end
 
   def change_piece(old_coordinates, new_coordinates)
     piece = coordinate_lookup(old_coordinates)
     piece.coordinates = new_coordinates
+    state.push(EmptySquare.new(old_coordinates))
+    state.compact!
     print_board
   end
 
   def pieces_of_color(color, array = state)
-    p color
     array.filter do |piece|
-      p piece.color
       piece.color == color
     end
   end
@@ -58,7 +63,7 @@ class GameBoard
   end
 
   def print_board
-    BoardDisplay.new(board_state).print_board
+    BoardDisplay.new(state).print_board
   end
 
   private

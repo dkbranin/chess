@@ -34,29 +34,34 @@ class Pawn < Piece
   end
 
   def validate_white(move)
-    return white_capture(move) unless same_column?(move)
-    return true if (coordinates[0] - move[0] == 1) && same_column?(move)
+    return white_capture(move) if capture?(move)
+    return true if (coordinates[0] - move.coordinates[0] == 1) && same_column?(move)
 
-    coordinates[0] == 6 && (coordinates[0] - move[0]) == 2 && same_column?(move)
+    coordinates[0] == 6 && (coordinates[0] - move.coordinates[0]) == 2 && same_column?(move)
   end
 
   def validate_black(move)
-    return black_capture(move) unless same_column?(move)
-    return true if (move[0] - coordinates[0] == 1) && same_column?(move)
+    return black_capture(move) if capture?(move)
+    return true if (move.coordinates[0] - coordinates[0] == 1) && same_column?(move)
 
-    coordinates[0] == 1 && (move[0] - coordinates[0]) == 2 && same_column?(move)
+    coordinates[0] == 1 && (move.coordinates[0] - coordinates[0]) == 2 && same_column?(move)
   end
 
   def white_capture(move)
-    coordinates[0] - move[0] == 1 && (coordinates[1] - move[1]).abs == 1
+    coordinates[0] - move.coordinates[0] == 1 && (coordinates[1] - move.coordinates[1]).abs == 1
   end
 
   def black_capture(move)
-    move[0] - coordinates[0] == 1 && (coordinates[1] - move[1]).abs == 1
+    move.coordinates[0] - coordinates[0] == 1 && (coordinates[1] - move.coordinates[1]).abs == 1
+  end
+
+  def capture?(move)
+    p coordinates
+    same_column?(move) == false && !move.name.nil? && move.color != color
   end
 
   def same_column?(move)
-    coordinates[1] == move[1]
+    coordinates[1] == move.coordinates[1]
   end
 end
 
@@ -70,13 +75,13 @@ class Knight < Piece
   end
 
   def validate_move(move)
-    return true if (coordinates[0] - move[0]).abs == 2 && column_change(move) == 1
+    return true if (coordinates[0] - move.coordinates[0]).abs == 2 && column_change(move) == 1
 
-    (coordinates[0] - move[0]).abs == 1 && column_change(move) == 2
+    (coordinates[0] - move.coordinates[0]).abs == 1 && column_change(move) == 2
   end
 
   def column_change(move)
-    (coordinates[1] - move[1]).abs
+    (coordinates[1] - move.coordinates[1]).abs
   end
 end
 
@@ -90,7 +95,7 @@ class Bishop < Piece
   end
 
   def validate_move(move)
-    (coordinates[0] - move[0]).abs == (coordinates[1] - move[1]).abs
+    (coordinates[0] - move.coordinates[0]).abs == (coordinates[1] - move.coordinates[1]).abs
   end
 end
 
@@ -104,7 +109,7 @@ class Rook < Piece
   end
 
   def validate_move(move)
-    coordinates[0] == move[0] || coordinates[1] == move[1]
+    coordinates[0] == move.coordinates[0] || coordinates[1] == move.coordinates[1]
   end
 end
 
@@ -118,9 +123,9 @@ class Queen < Piece
   end
 
   def validate_move(move)
-    return true if (coordinates[0] - move[0]).abs == (coordinates[1] - move[1]).abs
+    return true if (coordinates[0] - move.coordinates[0]).abs == (coordinates[1] - move.coordinates[1]).abs
 
-    coordinates[0] == move[0] || coordinates[1] == move[1]
+    coordinates[0] == move.coordinates[0] || coordinates[1] == move.coordinates[1]
   end
 end
 
@@ -134,6 +139,6 @@ class King < Piece
   end
 
   def validate_move(move)
-    (coordinates[1] - move[1]).abs <= 1 && (coordinates[0] - move[0]).abs <= 1
+    (coordinates[1] - move.coordinates[1]).abs <= 1 && (coordinates[0] - move.coordinates[0]).abs <= 1
   end
 end

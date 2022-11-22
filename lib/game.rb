@@ -12,13 +12,23 @@ class Game
     @turn_counter = 0
   end
 
-  def game_loop(player = player_one)
+  def game_loop
     board.print_board
+    input_loop ? turn_end : game_loop
+  end
+
+  def turn_end
+    @turn_counter += 1
+    game_loop
+  end
+
+  def input_loop(player = turn)
     coords = player.export_coordinates
     active_piece = board.coordinate_lookup(coords[0])
-    player.invalid_input if Move.new(active_piece, coords[1], board, player.color).move_checks == false
-    @turn_counter += 1
-    game_loop(turn)
+    return false if active_piece.nil?
+    return false unless active_piece.color == player.color
+
+    Move.new(active_piece, coords[1], board).move_checks
   end
 
   def turn

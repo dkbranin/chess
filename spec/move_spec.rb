@@ -98,6 +98,7 @@ describe Move do
         allow(board).to receive(:coordinate_lookup).and_return(pawn)
         allow(pawn).to receive(:coordinates=)
         allow(board).to receive(:change_piece)
+        allow(move).to receive(:eliminate_blocked_options).and_return([3, 3])
       end
       it 'allows the valid capture' do
         validation = move.move_checks

@@ -31,8 +31,10 @@ class BoardDisplay
   end
 
   def piece_symbols
-    { 'Black Knight' => '♞', 'Black Pawn' => '♟︎', 'Black Bishop' => '♝', 'Black Rook' => '♜', 'Black Queen' => '♛', 'Black King' => '♚',
-      'White Knight' => '♘', 'White Pawn' => '♙', 'White Bishop' => '♗', 'White Rook' => '♖', 'White Queen' => '♕', 'White King' => '♔',
+    { 'Black Knight' => "\e[38;5;#243m♞\e[0m", 'Black Pawn' => "\e[38;5;#243m♟︎\e[0m", 'Black Bishop' => "\e[38;5;#243m♝\e[0m",
+      'Black Rook' => "\e[38;5;#243m♜\e[0m", 'Black Queen' => "\e[38;5;#243m♛\e[0m", 'Black King' => "\e[38;5;#243m♚\e[0m",
+      'White Knight' => "\e[38;5;#81m♞\e[0m", 'White Pawn' => "\e[38;5;#81m♟︎\e[0m", 'White Bishop' => "\e[38;5;#81m♝\e[0m",
+      'White Rook' => "\e[38;5;#81m♜\e[0m", 'White Queen' => "\e[38;5;#81m♛\e[0m", 'White King' => "\e[38;5;#81m♚\e[0m",
       'Unoccupied' => ' ' }
   end
 

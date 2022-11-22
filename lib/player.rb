@@ -28,7 +28,6 @@ class Player
   def invalid_input
     puts "Sorry, that's not a valid move. Please type the coordinate of one of your pieces, \
     then the coordinate of the piece you'd like to move to. (For example, d2d4)."
-    input_obtainer
   end
 
   private
