@@ -5,12 +5,13 @@ require_relative 'empty_square'
 
 # This class stores the placement of all pieces.
 class GameBoard
-  attr_reader :white_pieces, :black_pieces, :open_spaces
+  attr_reader :white_pieces, :black_pieces, :open_spaces, :state
 
   def initialize
     @white_pieces = create_white_pieces
     @black_pieces = create_black_pieces
     @open_spaces = empty_spaces
+    @state = board_state
   end
 
   def merged_locations
@@ -44,8 +45,12 @@ class GameBoard
     print_board
   end
 
-  def pieces_of_color(color, array = board_state)
-    array.filter { |piece| piece.color == color }
+  def pieces_of_color(color, array = state)
+    p color
+    array.filter do |piece|
+      p piece.color
+      piece.color == color
+    end
   end
 
   def occupied_by_own?(move, own_color)

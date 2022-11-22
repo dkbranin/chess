@@ -5,7 +5,7 @@ require_relative '../lib/coordinate_mapper'
 
 describe Move do
   describe '#make_move' do
-    let(:fake_piece) { double('Piece', coordinates: [6, 0]) }
+    let(:fake_piece) { double('Piece', coordinates: [6, 0], color: :white) }
     let(:board) { double('GameBoard') }
     subject(:move) { described_class.new(fake_piece, [5, 0], board) }
     context 'when a piece is moved' do
@@ -17,9 +17,9 @@ describe Move do
   end
 
   describe '#blocked?' do
-    let(:bishop) { double('Bishop', coordinates: [4, 4], pathing: true) }
+    let(:bishop) { double('Bishop', coordinates: [4, 4], pathing: true, color: :white) }
     let(:board) { double('Board') }
-    subject(:move) { described_class.new(bishop, [7, 7], board, :white) }
+    subject(:move) { described_class.new(bishop, [7, 7], board) }
     context 'when a move is blocked' do
       let(:pawn) { double('Pawn', coordinates: [6, 6]) }
       before do
@@ -49,9 +49,9 @@ describe Move do
 
   describe '#capture' do
     let(:knight) { double('Knight', coordinates: [3, 3]) }
-    let(:rook) { double('Rook', coordinates: [5, 3]) }
+    let(:rook) { double('Rook', coordinates: [5, 3], color: :white) }
     let(:board) { double('Board') }
-    subject(:move) { described_class.new(rook, [3, 3], board, :white) }
+    subject(:move) { described_class.new(rook, [3, 3], board) }
     context 'when a capture is attempted' do
       before do
         allow(board).to receive(:coordinate_lookup).and_return(knight)
@@ -66,7 +66,7 @@ describe Move do
   describe '#piece_range' do
     let(:board) { double('Board') }
     let(:rook) { Rook.new([4, 4], :white)}
-    subject(:move) { described_class.new(rook, [3, 3], board, :white)}
+    subject(:move) { described_class.new(rook, [3, 3], board)}
     context 'when a move is attempted' do
       it 'provides a complete list of possible coordinates' do
         moves = move.piece_range
@@ -76,9 +76,9 @@ describe Move do
   end
 
   describe '#not_own_color' do
-    let(:board) { double('Board') }
+    let(:board) { GameBoard.new }
     let(:rook) { Rook.new([4, 4], :white)}
-    subject(:move) { described_class.new(rook, [3, 3], board, :white)}
+    subject(:move) { described_class.new(rook, [3, 3], board) }
     context 'when a move is attempted' do
       it 'exempts pieces of the moving color' do
         moves = move.not_own_color
@@ -92,7 +92,7 @@ describe Move do
       let(:knight) { Knight.new([5, 2], :white) }
       let(:board) { double('Board') }
       let(:pawn) { double('Pawn', coordinates: [3, 3], color: :black) }
-      subject(:move) { described_class.new(knight, [3, 3], board, :white) }
+      subject(:move) { described_class.new(knight, [3, 3], board) }
       before do
         allow(board).to receive(:occupied_by_own?).and_return(false)
         allow(board).to receive(:coordinate_lookup).and_return(pawn)

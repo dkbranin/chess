@@ -4,9 +4,9 @@
 class Move
   attr_reader :board, :moving_piece_color, :piece, :new_coordinates
 
-  def initialize(piece, new_coordinates, board = GameBoard.new, moving_piece_color = :white)
+  def initialize(piece, new_coordinates, board = GameBoard.new)
     @board = board
-    @moving_piece_color = moving_piece_color
+    @moving_piece_color = piece.color
     @piece = piece
     @new_coordinates = new_coordinates
     @opponent_color = opponent_color
@@ -27,7 +27,8 @@ class Move
   end
 
   def not_own_color
-    piece_range - board.pieces_of_color(:moving_piece_color)
+    same_color_coords = board.pieces_of_color(moving_piece_color).map(&:coordinates)
+    (piece_range - same_color_coords).reject { |coordinates| piece.coordinates == coordinates }
   end
 
   def horizontal_check_squares
@@ -35,7 +36,7 @@ class Move
   end
 
   def king
-    board.get_specific_piece('King', :moving_piece_color)[0]
+    board.get_specific_piece('King', moving_piece_color)[0]
   end
 
   def diagonal_check_squares
