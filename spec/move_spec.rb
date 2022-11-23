@@ -63,25 +63,25 @@ describe Move do
     end
   end
 
-  describe '#piece_range' do
+  describe '#maximum_piece_range' do
     let(:board) { double('Board') }
     let(:rook) { Rook.new([4, 4], :white)}
     subject(:move) { described_class.new(rook, [3, 3], board)}
     context 'when a move is attempted' do
       it 'provides a complete list of possible coordinates' do
-        moves = move.piece_range
+        moves = move.maximum_piece_range
         expect(moves).to eq([[0, 4], [1, 4], [2, 4], [3, 4], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [5, 4], [6, 4], [7, 4]])
       end
     end
   end
 
-  describe '#not_own_color' do
+  describe '#exclude_own_color' do
     let(:board) { GameBoard.new }
     let(:rook) { Rook.new([4, 4], :white)}
     subject(:move) { described_class.new(rook, [3, 3], board) }
     context 'when a move is attempted' do
       it 'exempts pieces of the moving color' do
-        moves = move.not_own_color
+        moves = move.exclude_own_color
         expect(moves).to eq([[0, 4], [1, 4], [2, 4], [3, 4], [4, 0], [4, 1], [4, 2], [4, 3], [4, 5], [4, 6], [4, 7], [5, 4]])
       end
     end
