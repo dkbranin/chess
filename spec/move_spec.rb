@@ -48,23 +48,20 @@ describe Move do
   end
 
   describe '#capture' do
-    let(:knight) { double('Knight', coordinates: [3, 3]) }
-    let(:rook) { double('Rook', coordinates: [5, 3], color: :white) }
-    let(:board) { double('Board') }
-    subject(:move) { described_class.new(rook, [3, 3], board) }
     context 'when a capture is attempted' do
-      before do
-        allow(board).to receive(:coordinate_lookup).and_return(knight)
-      end
-      it 'changes the coordinates on the captured piece' do
-        expect(knight).to receive(:coordinates=)
+      it 'sends a message to the board to remove the piece' do
+        rook = Rook.new([5, 3], :white)
+        board = GameBoard.new
+        move = Move.new(rook, [1, 3], board)
+
+        expect(board).to receive(:remove_piece)
         move.capture
       end
     end
   end
 
   describe '#maximum_piece_range' do
-    let(:board) { double('Board') }
+    let(:board) { GameBoard.new }
     let(:rook) { Rook.new([4, 4], :white)}
     subject(:move) { described_class.new(rook, [3, 3], board)}
     context 'when a move is attempted' do
@@ -88,21 +85,12 @@ describe Move do
   end
 
   describe '#move_checks' do
-    context 'when a capture is attempted with a knight' do
-      let(:knight) { Knight.new([5, 2], :white) }
-      let(:board) { double('Board') }
-      let(:pawn) { double('Pawn', coordinates: [3, 3], color: :black) }
-      subject(:move) { described_class.new(knight, [3, 3], board) }
-      before do
-        allow(board).to receive(:occupied_by_own?).and_return(false)
-        allow(board).to receive(:coordinate_lookup).and_return(pawn)
-        allow(pawn).to receive(:coordinates=)
-        allow(board).to receive(:change_piece)
-        allow(move).to receive(:eliminate_blocked_options).and_return([3, 3])
-      end
-      it 'allows the valid capture' do
+    let(:rook) { Rook.new([7, 0], :white) }
+    subject(:move) { described_class.new(rook, [5, 0]) }
+    context 'when a move is blocked' do
+      it 'returns false' do
         validation = move.move_checks
-        expect(validation).not_to eq(false)
+        expect(validation).to eq(false)
       end
     end
   end
