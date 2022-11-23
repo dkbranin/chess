@@ -2,19 +2,29 @@
 
 # This class provides generic behavior for any moving piece.
 class Piece
-  attr_reader :name, :color, :pathing
+  attr_reader :name, :color
   attr_accessor :coordinates
 
   def initialize(coordinates, color, name = nil)
     @coordinates = coordinates
     @color = color
     @name = name
-    @pathing = false
-    @taken = false
   end
 
   def to_s
     "#{color.capitalize} #{name}"
+  end
+
+  def current_row_minus_proposed_row(move)
+    coordinates[0] - move.coordinates[0]
+  end
+
+  def proposed_row_minus_current_row(move)
+    move.coordinates[0] - coordinates[0]
+  end
+
+  def column_difference(move)
+    coordinates[1] - move.coordinates[1]
   end
 end
 
@@ -23,8 +33,6 @@ class Pawn < Piece
   def initialize(coordinates, color)
     super
     @name = 'Pawn'
-    @pathing = true
-    @taken = false
   end
 
   def validate_move(move)
@@ -35,28 +43,27 @@ class Pawn < Piece
 
   def validate_white(move)
     return white_capture(move) if capture?(move)
-    return true if (coordinates[0] - move.coordinates[0] == 1) && same_column?(move)
+    return true if current_row_minus_proposed_row(move) == 1 && same_column?(move)
 
-    coordinates[0] == 6 && (coordinates[0] - move.coordinates[0]) == 2 && same_column?(move)
+    coordinates[0] == 6 && current_row_minus_proposed_row(move) == 2 && same_column?(move)
   end
 
   def validate_black(move)
     return black_capture(move) if capture?(move)
-    return true if (move.coordinates[0] - coordinates[0] == 1) && same_column?(move)
+    return true if proposed_row_minus_current_row(move) == 1 && same_column?(move)
 
-    coordinates[0] == 1 && (move.coordinates[0] - coordinates[0]) == 2 && same_column?(move)
+    coordinates[0] == 1 && proposed_row_minus_current_row(move) == 2 && same_column?(move)
   end
 
   def white_capture(move)
-    coordinates[0] - move.coordinates[0] == 1 && (coordinates[1] - move.coordinates[1]).abs == 1
+    current_row_minus_proposed_row(move) == 1 && column_difference(move).abs == 1
   end
 
   def black_capture(move)
-    move.coordinates[0] - coordinates[0] == 1 && (coordinates[1] - move.coordinates[1]).abs == 1
+    proposed_row_minus_current_row(move) == 1 && column_difference(move).abs == 1
   end
 
   def capture?(move)
-    p coordinates
     same_column?(move) == false && !move.name.nil? && move.color != color
   end
 
@@ -70,18 +77,16 @@ class Knight < Piece
   def initialize(coordinates, color)
     super
     @name = 'Knight'
-    @pathing = false
-    @taken = false
   end
 
   def validate_move(move)
-    return true if (coordinates[0] - move.coordinates[0]).abs == 2 && column_change(move) == 1
+    return true if current_row_minus_proposed_row(move).abs == 2 && column_change(move) == 1
 
-    (coordinates[0] - move.coordinates[0]).abs == 1 && column_change(move) == 2
+    current_row_minus_proposed_row(move).abs == 1 && column_change(move) == 2
   end
 
   def column_change(move)
-    (coordinates[1] - move.coordinates[1]).abs
+    column_difference(move).abs
   end
 end
 
@@ -90,12 +95,10 @@ class Bishop < Piece
   def initialize(coordinates, color)
     super
     @name = 'Bishop'
-    @pathing = true
-    @taken = false
   end
 
   def validate_move(move)
-    (coordinates[0] - move.coordinates[0]).abs == (coordinates[1] - move.coordinates[1]).abs
+    current_row_minus_proposed_row(move).abs == column_difference(move).abs
   end
 end
 
@@ -104,8 +107,6 @@ class Rook < Piece
   def initialize(coordinates, color)
     super
     @name = 'Rook'
-    @pathing = true
-    @taken = false
   end
 
   def validate_move(move)
@@ -118,12 +119,10 @@ class Queen < Piece
   def initialize(coordinates, color)
     super
     @name = 'Queen'
-    @pathing = true
-    @taken = false
   end
 
   def validate_move(move)
-    return true if (coordinates[0] - move.coordinates[0]).abs == (coordinates[1] - move.coordinates[1]).abs
+    return true if current_row_minus_proposed_row(move).abs == column_difference(move).abs
 
     coordinates[0] == move.coordinates[0] || coordinates[1] == move.coordinates[1]
   end
@@ -134,11 +133,9 @@ class King < Piece
   def initialize(coordinates, color)
     super
     @name = 'King'
-    @pathing = true
-    @taken = false
   end
 
   def validate_move(move)
-    (coordinates[1] - move.coordinates[1]).abs <= 1 && (coordinates[0] - move.coordinates[0]).abs <= 1
+    column_difference(move).abs <= 1 && current_row_minus_proposed_row(move).abs <= 1
   end
 end

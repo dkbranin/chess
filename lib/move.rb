@@ -28,7 +28,7 @@ class Move
 
   def capture(game_board = board)
     captured_piece = game_board.coordinate_lookup(new_coordinates)
-    board.remove_piece(captured_piece)
+    game_board.remove_piece(captured_piece)
   end
 
   def capture_attempt?(game_board = board)
