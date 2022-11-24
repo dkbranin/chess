@@ -1,4 +1,5 @@
 require_relative '../lib/board_display'
+require_relative '../lib/coordinate_mapper'
 
 describe BoardDisplay do
   describe '#print_board' do

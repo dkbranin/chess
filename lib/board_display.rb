@@ -1,14 +1,16 @@
 # frozen_string_literal: true
+require_relative '../lib/coordinate_mapper'
 
 # Class that prints a board and the current position of all pieces.
 class BoardDisplay
+  include CoordinateMapper
   attr_reader :piece_status, :all_coords
 
   RED = 222
   WHITE = 124
   SQUARE = '  '
 
-  def initialize(piece_status = GameBoard.new.board_state, all_coords = CoordinateMapper.new.all_coordinates)
+  def initialize(piece_status = GameBoard.new.board_state, all_coords = all_coordinates)
     @all_coords = all_coords
     @piece_status = piece_status
   end

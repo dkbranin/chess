@@ -2,6 +2,7 @@
 
 # This class contains methods to validate that a move can be played.
 class Move
+  include CoordinateMapper
   attr_reader :board, :moving_piece_color, :piece, :new_coordinates
 
   def initialize(piece, new_coordinates, board = GameBoard.new)
@@ -42,7 +43,7 @@ class Move
   # Potential move builder methods
 
   def maximum_piece_range(active_piece = piece)
-    CoordinateMapper.new.all_coordinates.filter { |coordinate| active_piece.validate_move(board.coordinate_lookup(coordinate)) }
+    all_coordinates.filter { |coordinate| active_piece.validate_move(board.coordinate_lookup(coordinate)) }
   end
 
   def exclude_own_color(color = moving_piece_color, active_piece = piece)
@@ -72,7 +73,7 @@ class Move
   def would_end_in_check?
     temp_state = board.dup
     alter_board(temp_state)
-    Move.new(piece, new_coordinates, temp_state).in_check?
+    Move.new(piece, king.coordinates, temp_state).in_check?
   end
 
   def in_check?

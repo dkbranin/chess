@@ -2,6 +2,7 @@
 
 # This class contains information about a player and provides various input and output methods.
 class Player
+  include CoordinateMapper
   attr_reader :color
 
   def initialize(color = :white)
@@ -11,7 +12,7 @@ class Player
   def export_coordinates
     raw = validate_input
     p raw
-    CoordinateMapper.new.coordinate_lookup(raw)
+    coordinate_lookup(raw)
   end
 
   def validate_input

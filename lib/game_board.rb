@@ -5,6 +5,7 @@ require_relative 'empty_square'
 
 # This class stores the placement of all pieces.
 class GameBoard
+  include CoordinateMapper
   attr_reader :white_pieces, :black_pieces, :open_spaces
   attr_accessor :state
 
@@ -20,7 +21,7 @@ class GameBoard
   end
 
   def empty_spaces(array = merged_locations)
-    empty_coordinates = CoordinateMapper.new.all_coordinates - array.map(&:coordinates)
+    empty_coordinates = all_coordinates - array.map(&:coordinates)
     empty_coordinates.map { |coordinate| EmptySquare.new(coordinate) }
   end
 

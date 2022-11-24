@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-class CoordinateMapper
+# Module allowing coordinates and symbols to be converted.
+module CoordinateMapper
   def coordinate_lookup(symbols)
     symbols.map { |symbol| symbol_and_coord[symbol] }
   end
