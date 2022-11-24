@@ -16,6 +16,8 @@ class Player
 
   def validate_input
     prospective_move = input_obtainer
+    return end_program if prospective_move == 'quit'
+
     invalid_input unless valid_input?(prospective_move)
 
     [prospective_move[0, 2].to_sym, prospective_move[2, 4].to_sym]
@@ -31,6 +33,10 @@ class Player
   end
 
   private
+
+  def end_program
+    exit(0)
+  end
 
   def input_obtainer
     puts 'What move would you like to make? Select the coordinates of the piece you \

@@ -62,8 +62,8 @@ describe Move do
 
   describe '#maximum_piece_range' do
     let(:board) { GameBoard.new }
-    let(:rook) { Rook.new([4, 4], :white)}
-    subject(:move) { described_class.new(rook, [3, 3], board)}
+    let(:rook) { Rook.new([4, 4], :white) }
+    subject(:move) { described_class.new(rook, [3, 3], board) }
     context 'when a move is attempted' do
       it 'provides a complete list of possible coordinates' do
         moves = move.maximum_piece_range
@@ -74,7 +74,7 @@ describe Move do
 
   describe '#exclude_own_color' do
     let(:board) { GameBoard.new }
-    let(:rook) { Rook.new([4, 4], :white)}
+    let(:rook) { Rook.new([4, 4], :white) }
     subject(:move) { described_class.new(rook, [3, 3], board) }
     context 'when a move is attempted' do
       it 'exempts pieces of the moving color' do
