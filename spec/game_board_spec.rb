@@ -2,6 +2,7 @@
 
 require_relative '../lib/game_board'
 require_relative '../lib/empty_square'
+require_relative '../lib/board_builder'
 
 describe GameBoard do
   describe '#print_board' do

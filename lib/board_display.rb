@@ -11,7 +11,7 @@ class BoardDisplay
   WHITE = 124
   SQUARE = '  '
 
-  def initialize(piece_status = GameBoard.new.board_state, all_coords = all_coordinates)
+  def initialize(piece_status = GameBoard.new.state, all_coords = all_coordinates)
     @all_coords = all_coords
     @piece_status = piece_status
   end
