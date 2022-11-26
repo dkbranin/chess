@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative '../lib/coordinate_mapper'
 
 # Class that prints a board and the current position of all pieces.

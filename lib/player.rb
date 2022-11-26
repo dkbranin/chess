@@ -11,8 +11,7 @@ class Player
 
   def export_coordinates
     raw = validate_input
-    p raw
-    coordinate_lookup(raw)
+    symbols_to_coordinates(raw)
   end
 
   def validate_input

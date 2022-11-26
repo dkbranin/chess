@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'pry-byebug'
 # This class contains methods to validate that a move can be played.
 class Move
   include CoordinateMapper
+  include Messaging
   attr_reader :board, :moving_piece_color, :piece, :new_coordinates
 
   def initialize(piece, new_coordinates, board = GameBoard.new)
@@ -10,21 +12,17 @@ class Move
     @moving_piece_color = piece.color
     @piece = piece
     @new_coordinates = new_coordinates
-    @opponent_color = opponent_color
   end
 
-  def move_checks
-    return false unless exclude_blocked_moves.include?(new_coordinates)
-    return false if would_end_in_check?
-
-    alter_board
+  def move_validation
+    exclude_blocked_moves.include?(new_coordinates) && !would_end_in_check?
   end
 
   # Methods to change piece position
 
-  def alter_board(game_board = board)
+  def alter_board(game_board = board, game_piece = piece)
     capture(game_board) if capture_attempt?(game_board)
-    make_move(game_board)
+    make_move(game_board, game_piece)
   end
 
   def capture(game_board = board)
@@ -36,8 +34,8 @@ class Move
     game_board.coordinate_lookup(new_coordinates)&.color == opponent_color
   end
 
-  def make_move(game_board = board)
-    game_board.change_piece(piece.coordinates, new_coordinates)
+  def make_move(game_board = board, game_piece = piece)
+    game_board.change_piece(game_piece.coordinates, new_coordinates)
   end
 
   # Potential move builder methods
@@ -72,8 +70,9 @@ class Move
 
   def would_end_in_check?
     temp_state = board.dup
-    alter_board(temp_state)
-    Move.new(piece, king.coordinates, temp_state).in_check?
+    temp_piece = piece.dup
+    alter_board(temp_state, temp_piece)
+    Move.new(temp_piece, king.coordinates, temp_state).in_check?
   end
 
   def in_check?

@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require_relative '../lib/board_display'
-require_relative '../lib/coordinate_mapper'
 
 describe BoardDisplay do
   describe '#print_board' do
     subject(:occupied_board) { described_class.new }
-    let(:board_data) { instance_double('GameBoard')}
+    let(:board_data) { instance_double('GameBoard') }
     context 'when no moves have been made' do
       it 'prints a board with pieces in their original positions' do
         board = occupied_board.print_board

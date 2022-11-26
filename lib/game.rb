@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'messaging'
+
 # This class is responsible for initially running the game.
 class Game
+  include Messaging
   attr_reader :board, :player_one, :player_two, :turn_counter
 
   def initialize
@@ -33,7 +36,12 @@ class Game
     active_piece = board.coordinate_lookup(coordinates[0])
     return false unless active_piece.color == player.color
 
-    Move.new(active_piece, coordinates[1], board).move_checks
+    move_checks(active_piece, coordinates[1])
+  end
+
+  def move_checks(active_piece, coordinates)
+    move = Move.new(active_piece, coordinates, board)
+    move.alter_board if move.move_validation
   end
 
   def turn

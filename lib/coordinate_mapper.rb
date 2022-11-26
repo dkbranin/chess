@@ -2,7 +2,7 @@
 
 # Module allowing coordinates and symbols to be converted.
 module CoordinateMapper
-  def coordinate_lookup(symbols)
+  def symbols_to_coordinates(symbols)
     symbols.map { |symbol| symbol_and_coord[symbol] }
   end
 

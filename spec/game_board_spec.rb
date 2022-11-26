@@ -29,7 +29,8 @@ describe GameBoard do
     subject(:game_board) { described_class.new }
     context 'when a piece is changed' do
       it 'prints a board with the piece in the new position' do
-        board_string = game_board.change_piece([6, 1], [5, 1])
+        game_board.change_piece([6, 1], [5, 1])
+        board_string = game_board.print_board
         expect(board_string).to eq(
           "\
 \e[48;5;222m \e[38;5;#243m♜\e[0m\e[0m\e[48;5;124m \e[38;5;#243m♞\e[0m\e[0m\e[48;5;222m \e[38;5;#243m♝\e[0m\e[0m\e[48;5;124m \e[38;5;#243m♛\e[0m\e[0m\e[48;5;222m \e[38;5;#243m♚\e[0m\e[0m\e[48;5;124m \e[38;5;#243m♝\e[0m\e[0m\e[48;5;222m \e[38;5;#243m♞\e[0m\e[0m\e[48;5;124m \e[38;5;#243m♜\e[0m\e[0m 8 \n\
@@ -42,6 +43,17 @@ describe GameBoard do
 \e[48;5;124m \e[38;5;#81m♜\e[0m\e[0m\e[48;5;222m \e[38;5;#81m♞\e[0m\e[0m\e[48;5;124m \e[38;5;#81m♝\e[0m\e[0m\e[48;5;222m \e[38;5;#81m♛\e[0m\e[0m\e[48;5;124m \e[38;5;#81m♚\e[0m\e[0m\e[48;5;222m \e[38;5;#81m♝\e[0m\e[0m\e[48;5;124m \e[38;5;#81m♞\e[0m\e[0m\e[48;5;222m \e[38;5;#81m♜\e[0m\e[0m 1 \n\
  a b c d e f g h"
         )
+      end
+    end
+    context 'when a piece is changed' do
+      it 'changes the board state' do
+        expect { game_board.change_piece([6, 1], [5, 1]) }.to change { game_board.state }
+      end
+    end
+    context 'when a piece is changed' do
+      it 'leaves the board state with a length of 64' do
+        game_board.change_piece([6, 1], [5, 1])
+        expect(game_board.state.length).to eq(64)
       end
     end
   end

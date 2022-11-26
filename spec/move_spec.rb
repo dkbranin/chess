@@ -17,7 +17,7 @@ describe Move do
   end
 
   describe '#blocked?' do
-    let(:bishop) { double('Bishop', coordinates: [4, 4], pathing: true, color: :white) }
+    let(:bishop) { double('Bishop', coordinates: [4, 4], color: :white) }
     let(:board) { double('Board') }
     subject(:move) { described_class.new(bishop, [7, 7], board) }
     context 'when a move is blocked' do
@@ -61,9 +61,8 @@ describe Move do
   end
 
   describe '#maximum_piece_range' do
-    let(:board) { GameBoard.new }
     let(:rook) { Rook.new([4, 4], :white) }
-    subject(:move) { described_class.new(rook, [3, 3], board) }
+    subject(:move) { described_class.new(rook, [3, 3]) }
     context 'when a move is attempted' do
       it 'provides a complete list of possible coordinates' do
         moves = move.maximum_piece_range
@@ -73,24 +72,12 @@ describe Move do
   end
 
   describe '#exclude_own_color' do
-    let(:board) { GameBoard.new }
     let(:rook) { Rook.new([4, 4], :white) }
-    subject(:move) { described_class.new(rook, [3, 3], board) }
+    subject(:move) { described_class.new(rook, [3, 3]) }
     context 'when a move is attempted' do
       it 'exempts pieces of the moving color' do
         moves = move.exclude_own_color
         expect(moves).to eq([[0, 4], [1, 4], [2, 4], [3, 4], [4, 0], [4, 1], [4, 2], [4, 3], [4, 5], [4, 6], [4, 7], [5, 4]])
-      end
-    end
-  end
-
-  describe '#move_checks' do
-    let(:rook) { Rook.new([7, 0], :white) }
-    subject(:move) { described_class.new(rook, [5, 0]) }
-    context 'when a move is blocked' do
-      it 'returns false' do
-        validation = move.move_checks
-        expect(validation).to eq(false)
       end
     end
   end

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'piece'
-require_relative 'empty_square'
+require_relative 'coordinate_mapper'
+require_relative 'messaging'
 
 # This class stores the placement of all pieces.
 class GameBoard
   include CoordinateMapper
+  include Messaging
   attr_reader :white_pieces, :black_pieces, :open_spaces
   attr_accessor :state
 
@@ -49,8 +50,7 @@ class GameBoard
     piece = coordinate_lookup(old_coordinates)
     piece.coordinates = new_coordinates
     state.push(EmptySquare.new(old_coordinates))
-    state.compact!
-    print_board
+    state.delete_if { |square| square.coordinates == new_coordinates && square.instance_of?(EmptySquare) }
   end
 
   def pieces_of_color(color, array = state)
