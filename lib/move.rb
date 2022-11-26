@@ -69,7 +69,7 @@ class Move
   end
 
   def would_end_in_check?
-    temp_state = board.dup
+    temp_state = Marshal.load(Marshal.dump(board))
     temp_piece = piece.dup
     alter_board(temp_state, temp_piece)
     Move.new(temp_piece, king.coordinates, temp_state).in_check?

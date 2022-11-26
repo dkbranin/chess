@@ -23,7 +23,7 @@ class GameBoard
 
   def all_occupied_coordinates(array = state)
     actual_pieces = array.reject { |piece| piece.name.nil? }
-    actual_pieces.map { |piece| piece&.coordinates }
+    actual_pieces.map(&:coordinates)
   end
 
   def get_specific_piece(name, color, array = state)
