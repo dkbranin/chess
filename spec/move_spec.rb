@@ -28,7 +28,7 @@ describe Move do
         allow(bishop).to receive(:name).and_return('Bishop')
       end
       it 'returns true' do
-        validation = move.blocked?
+        validation = move.blocked?([7, 7])
         expect(validation).to eq(true)
       end
     end
@@ -41,7 +41,7 @@ describe Move do
         allow(bishop).to receive(:name).and_return('Bishop')
       end
       it 'returns false' do
-        validation = move.blocked?
+        validation = move.blocked?([6, 5])
         expect(validation).to eq(false)
       end
     end
@@ -78,6 +78,38 @@ describe Move do
       it 'exempts pieces of the moving color' do
         moves = move.exclude_own_color
         expect(moves).to eq([[0, 4], [1, 4], [2, 4], [3, 4], [4, 0], [4, 1], [4, 2], [4, 3], [4, 5], [4, 6], [4, 7], [5, 4]])
+      end
+    end
+  end
+
+  describe '#checkmate?' do
+    let(:board) { GameBoard.new }
+    let(:rook) { Rook.new([4, 4], :white) }
+
+    def proceed(coordinates, new_coords, board)
+      piece = board.coordinate_lookup(coordinates)
+      Move.new(piece, new_coords, board).alter_board
+    end
+
+    subject(:move) { described_class.new(rook, [3, 3], board) }
+    context 'when the game begins' do
+      it 'is not checkmate' do
+        checkmate_status = move.checkmate?
+        expect(checkmate_status).to be(false)
+      end
+    end
+    context 'when a side cannot escape check' do
+      subject(:move) { described_class.new(board.coordinate_lookup([6, 1]), [6, 2], board) }
+      before do
+        proceed([6, 5], [5, 5], board)
+        proceed([1, 4], [2, 4], board)
+        proceed([6, 6], [4, 6], board)
+        proceed([0, 3], [4, 7], board)
+      end
+      it 'is checkmate' do
+        p board
+        checkmate_status = move.checkmate?
+        expect(checkmate_status).to be(true)
       end
     end
   end

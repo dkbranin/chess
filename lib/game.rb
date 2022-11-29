@@ -16,7 +16,7 @@ class Game
 
   def game_loop
     board.print_board
-    input_loop ? turn_end : game_loop
+    input_loop == errors[:invalid_range] ? game_loop : turn_end
   end
 
   def turn_end(determiner: true)
@@ -24,11 +24,6 @@ class Game
 
     @turn_counter += 1
     game_loop
-  end
-
-  def call_input_loop
-    @turn_counter += 1
-    input_loop
   end
 
   def input_loop(player = turn)
@@ -41,7 +36,7 @@ class Game
 
   def move_checks(active_piece, coordinates)
     move = Move.new(active_piece, coordinates, board)
-    move.alter_board if move.move_validation
+    move.move_validation ? move.alter_board : errors[:invalid_range]
   end
 
   def turn
