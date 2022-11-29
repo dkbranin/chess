@@ -15,7 +15,7 @@ class Move
   end
 
   def move_validation(coordinates = new_coordinates)
-    exclude_blocked_moves.include?(coordinates) && !would_end_in_check?
+    MoveBuilder.new(piece, color, board).exclude_blocked_moves.include?(coordinates) && !would_end_in_check?
   end
 
   # Methods to change piece position
@@ -38,28 +38,6 @@ class Move
     game_board.change_piece(game_piece.coordinates, new_coordinates)
   end
 
-  # Potential move builder methods
-
-  def maximum_piece_range(active_piece = piece)
-    all_coordinates.filter { |coordinate| active_piece.validate_move(board.coordinate_lookup(coordinate)) }
-  end
-
-  def exclude_own_color(own_color = color, active_piece = piece)
-    same_color_coords = board.pieces_of_color(own_color).map(&:coordinates)
-    (maximum_piece_range(active_piece) - same_color_coords).reject { |coordinates| active_piece.coordinates == coordinates }
-  end
-
-  def blocked?(target, active_piece = piece)
-    return false if active_piece.name == 'Knight'
-
-    traversed_path = Path.new.path_choice(active_piece.coordinates, target)
-    traversed_path.any? { |coords| board.all_occupied_coordinates.include?(coords) }
-  end
-
-  def exclude_blocked_moves(array = exclude_own_color, active_piece = piece)
-    array.reject { |coordinate| blocked?(coordinate, active_piece) }
-  end
-
   # Check methods
 
   def king(color)
@@ -80,8 +58,8 @@ class Move
   def squares_under_attack
     attacked_squares = []
     board.pieces_of_color(opponent_color).each do |opponent_piece|
-      not_color = exclude_own_color(opponent_color, opponent_piece)
-      attacked_squares.push(exclude_blocked_moves(not_color, opponent_piece))
+      not_color = move_builder.exclude_own_color(opponent_color, opponent_piece)
+      attacked_squares.push(move_builder.exclude_blocked_moves(not_color, opponent_piece))
     end
     p attacked_squares.flatten(1).uniq
     attacked_squares.flatten(1).uniq
@@ -89,11 +67,15 @@ class Move
 
   def checkmate?
     board.pieces_of_color(color).all? do |own_piece|
-      possible_ends = exclude_blocked_moves(exclude_own_color, own_piece)
+      possible_ends = move_builder.exclude_blocked_moves(move_builder.exclude_own_color, own_piece)
       possible_ends.none? do |coordinate|
         clone_board(own_piece, coordinate).move_validation
       end
     end
+  end
+
+  def move_builder
+    MoveBuilder.new(piece, color, board)
   end
 
   def clone_board(possible_piece, coordinate)

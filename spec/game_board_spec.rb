@@ -48,7 +48,7 @@ describe GameBoard do
     end
     context 'when a piece is changed' do
       it 'changes the board state' do
-        expect { game_board.change_piece([6, 1], [5, 1]) }.to change { game_board.state }
+        expect { game_board.change_piece([6, 1], [5, 1]) }.to(change { game_board.state })
       end
     end
     context 'when a piece is changed' do

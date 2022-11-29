@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+# Determines all the potential moves for a particular piece.
 class MoveBuilder
-  attr_reader :piece, :own_color
+  include CoordinateMapper
+  attr_reader :piece, :own_color, :board
 
-  def initialize(piece, color, board)
+  def initialize(piece, color, board = GameBoard.new)
     @piece = piece
     @own_color = color
     @board = board

@@ -2,6 +2,7 @@
 
 require_relative 'coordinate_mapper'
 
+# Constructs the initiial board.
 class BoardBuilder
   include CoordinateMapper
 
