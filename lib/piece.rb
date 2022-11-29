@@ -36,6 +36,7 @@ class Pawn < Piece
   end
 
   def validate_move(move)
+    return false if same_column?(move) && !move.name.nil?
     return validate_white(move) if color == :white
 
     validate_black(move)

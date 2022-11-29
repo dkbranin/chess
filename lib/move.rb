@@ -7,9 +7,9 @@ class Move
   include Messaging
   attr_reader :board, :color, :piece, :new_coordinates
 
-  def initialize(piece, new_coordinates, board = GameBoard.new)
+  def initialize(piece:, new_coordinates:, color: piece.color, board: GameBoard.new)
     @board = board
-    @color = piece.color
+    @color = color
     @piece = piece
     @new_coordinates = new_coordinates
   end
@@ -48,7 +48,7 @@ class Move
     temp_state = Marshal.load(Marshal.dump(board))
     temp_piece = piece.dup
     alter_board(temp_state, temp_piece)
-    Move.new(temp_piece, king(color).coordinates, temp_state).in_check?
+    Move.new(piece: temp_piece, new_coordinates: king(color).coordinates, board: temp_state).in_check?
   end
 
   def in_check?
@@ -61,27 +61,11 @@ class Move
       not_color = move_builder.exclude_own_color(opponent_color, opponent_piece)
       attacked_squares.push(move_builder.exclude_blocked_moves(not_color, opponent_piece))
     end
-    p attacked_squares.flatten(1).uniq
     attacked_squares.flatten(1).uniq
   end
 
-  def checkmate?
-    board.pieces_of_color(color).all? do |own_piece|
-      possible_ends = move_builder.exclude_blocked_moves(move_builder.exclude_own_color, own_piece)
-      possible_ends.none? do |coordinate|
-        clone_board(own_piece, coordinate).move_validation
-      end
-    end
-  end
-
-  def move_builder
-    MoveBuilder.new(piece, color, board)
-  end
-
-  def clone_board(possible_piece, coordinate)
-    temp_state = Marshal.load(Marshal.dump(board))
-    temp_piece = possible_piece.dup
-    Move.new(temp_piece, coordinate, temp_state)
+  def move_builder(builder_piece: piece)
+    MoveBuilder.new(builder_piece, color, board)
   end
 
   def opponent_color

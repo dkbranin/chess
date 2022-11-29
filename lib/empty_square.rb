@@ -8,14 +8,12 @@ class Square
 end
 
 class EmptySquare
-  attr_reader :coordinates, :color, :name, :pathing, :taken
+  attr_reader :coordinates, :color, :name
 
   def initialize(coordinates)
     @coordinates = coordinates
     @color = nil
     @name = nil
-    @pathing = nil
-    @taken = nil
   end
 
   def to_s

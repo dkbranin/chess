@@ -35,7 +35,7 @@ class Game
   end
 
   def move_checks(active_piece, coordinates)
-    move = Move.new(active_piece, coordinates, board)
+    move = Move.new(piece: active_piece, new_coordinates: coordinates, board: board)
     move.move_validation ? move.alter_board : errors[:invalid_range]
   end
 
