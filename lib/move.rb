@@ -73,6 +73,5 @@ class Move
   end
 end
 
-# Checkmate
 # Castling
 

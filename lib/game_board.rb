@@ -2,15 +2,17 @@
 
 require_relative 'coordinate_mapper'
 require_relative 'messaging'
+require_relative 'move_logger'
 
 # This class stores the placement of all pieces.
 class GameBoard
   include CoordinateMapper
   include Messaging
-  attr_reader :state
+  attr_reader :state, :log
 
   def initialize
     @state = initial_state
+    @log = MoveLogger.new
   end
 
   def initial_state
@@ -39,6 +41,16 @@ class GameBoard
     piece.coordinates = new_coordinates
     state.push(EmptySquare.new(old_coordinates))
     state.delete_if { |square| square.coordinates == new_coordinates && square.instance_of?(EmptySquare) }
+    log_move(old_coordinates, new_coordinates)
+  end
+
+  def log_move(old_coordinates, new_coordinates)
+    log.log_move([coordinate_to_symbol(old_coordinates), coordinate_to_symbol(new_coordinates)])
+    log.print_log
+  end
+
+  def piece_moved?(coordinate)
+    log.first_moves.include?(coordinate_to_symbol(coordinate))
   end
 
   def pieces_of_color(color, array = state)

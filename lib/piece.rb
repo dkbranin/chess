@@ -137,6 +137,10 @@ class King < Piece
   end
 
   def validate_move(move)
+    base_move(move)
+  end
+
+  def base_move(move)
     column_difference(move).abs <= 1 && current_row_minus_proposed_row(move).abs <= 1
   end
 end

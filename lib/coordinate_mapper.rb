@@ -6,6 +6,10 @@ module CoordinateMapper
     symbols.map { |symbol| symbol_and_coord[symbol] }
   end
 
+  def coordinate_to_symbol(coordinate)
+    symbol_and_coord.invert[coordinate]
+  end
+
   def symbol_and_coord
     coord_mapping_hash = {}
     chess_notation.each_with_index { |symbol, index| coord_mapping_hash[symbol] = all_coordinates[index] }

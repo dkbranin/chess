@@ -23,7 +23,7 @@ class Game
     return if determiner == false
 
     @turn_counter += 1
-    game_loop
+    Checkmate.new(turn.color, board).checkmate? ? game_loop : game_over
   end
 
   def input_loop(player = turn)
@@ -39,11 +39,12 @@ class Game
     move.move_validation ? move.alter_board : errors[:invalid_range]
   end
 
+  def game_over
+    @turn_counter += 1
+    puts "The game is over! #{turn.color} wins."
+  end
+
   def turn
     turn_counter.even? ? player_one : player_two
   end
 end
-
-# Currently the input loop is difficult to test, because it calls itself with no end.
-# It should be able to break under various conditions -- user quits, asked for in a test
-# Or if an error message is called
